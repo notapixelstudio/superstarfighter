@@ -3,6 +3,7 @@ extends Control
 """
 this Node is a renderer of the Species Selected. No logic in here. 
 """
+signal selected
 
 export var species : Resource 
 export var controls : String
@@ -85,3 +86,12 @@ func disable():
 func disable_arrows():
 	$LeftArrow.disable()
 	$RightArrow.disable()
+
+func is_selected_left():
+	return $LeftArrow.pressed
+
+func is_selected_right():
+	return $RightArrow.pressed
+
+func _on_TouchScreenButton_pressed():
+	emit_signal("selected")

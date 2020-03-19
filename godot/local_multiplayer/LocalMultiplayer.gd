@@ -55,7 +55,7 @@ func _ready():
 	selection_screen.connect("fight", self, "combat")
 	selection_screen.connect("back", self, "back")
 	global.local_multiplayer = self
-
+	VirtualJoyStickInput.add_joy_stick(false, true)
 func _exit_tree():
 	global.local_multiplayer = null
 
@@ -188,7 +188,8 @@ func start_level(_level, demo = false):
 			child.queue_free()
 			yield(child, 'tree_exited')
 	combat.demo = demo
-
+	
+	VirtualJoyStickInput.add_joy_stick()
 	add_child(combat)
 	yield(combat, "ready")
 	

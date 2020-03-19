@@ -74,17 +74,17 @@ var action_time = 0.0
 func _process(delta):
 	if action_time >= 0.0:
 		action_time -= delta
-	if Input.is_action_just_pressed(controls+"_right") and not global.demo:
+	if Input.is_action_just_pressed(controls+"_right") or $SpeciesSelection.is_selected_right() and not global.demo:
 		_on_Next_pressed()
 		action_time = FIRST_DELAY
-	if Input.is_action_just_pressed(controls+"_left") and not global.demo:
+	if Input.is_action_just_pressed(controls+"_left") or $SpeciesSelection.is_selected_left() and not global.demo:
 		_on_Previous_pressed()
 		action_time = FIRST_DELAY
 		
-	if Input.is_action_pressed(controls+"_right") and not global.demo and action_time <= 0.0:
+	if Input.is_action_pressed(controls+"_right") or $SpeciesSelection.is_selected_right() and not global.demo and action_time <= 0.0:
 		_on_Next_pressed()
 		action_time = FOLLOW_DELAY
-	elif Input.is_action_pressed(controls+"_left") and not global.demo and action_time <= 0.0:
+	elif Input.is_action_pressed(controls+"_left") or $SpeciesSelection.is_selected_left() and not global.demo and action_time <= 0.0:
 		_on_Previous_pressed()
 		action_time = FOLLOW_DELAY
 		
@@ -92,7 +92,7 @@ func _input(event):
 	if disabled:
 		return
 	if selected :
-		if event.is_action_pressed(controls+"_accept"):
+		if event.is_action_pressed(controls+"_accept") or VirtualJoyStickInput.is_action_pressed("fire"):
 			emit_signal("ready_to_fight")
 #		elif event.is_action_pressed(controls+"_cancel") and not global.demo:
 #			deselect()
@@ -171,4 +171,6 @@ func enable_choice():
 	speciesSelection.enable()
 	if global.demo:
 		speciesSelection.disable_arrows()
-	
+
+func _on_SpeciesSelection_selected() -> void:
+	select_character()

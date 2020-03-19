@@ -28,7 +28,8 @@ func keyboard_handling():
 	if absolute_controls:
 		target.y = int(Input.is_action_pressed(controls+'_down')) - int(Input.is_action_pressed(controls+'_up'))
 		target.x = int(Input.is_action_pressed(controls+'_right')) - int(Input.is_action_pressed(controls+'_left'))
-		
+		target.y = int(VirtualJoyStickInput.is_action_pressed('down')) - int(VirtualJoyStickInput.VirtualJoyStickInput('up'))
+		target.x = int(VirtualJoyStickInput.is_action_pressed('right')) - int(VirtualJoyStickInput.is_action_pressed('left'))
 	return target
 	
 func joypad_handling():
@@ -73,7 +74,8 @@ func control(delta):
 		
 	else:
 		absolute_controls = false
-		rotation_dir = int(Input.is_action_pressed(controls+'_right')) - int(Input.is_action_pressed(controls+'_left'))
+		# rotation_dir = int(Input.is_action_pressed(controls+'_right')) - int(Input.is_action_pressed(controls+'_left'))
+		rotation_dir = int(VirtualJoyStickInput.is_action_pressed('right')) - int(VirtualJoyStickInput.is_action_pressed('left'))
 		
 	# charge
 	if charging:
@@ -94,11 +96,14 @@ func control(delta):
 	# fire
 	if charging and Input.is_action_just_released(controls+'_fire'):
 		fire()
-		
+	
 	# overcharge
 	if charge > MAX_OVERCHARGE:
 		fire()
-		
+	
+	# TODO fix this fire condition
+	if VirtualJoyStickInput.is_action_pressed("fire"):
+		fire()
 	# cooldown
 	fire_cooldown -= delta * Engine.time_scale
 	
